@@ -10,6 +10,9 @@
 		0900025A243AA6B2003C7248 /* Propagate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09000250243AA6B2003C7248 /* Propagate.framework */; };
 		0900025F243AA6B2003C7248 /* PropagateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900025E243AA6B2003C7248 /* PropagateTests.swift */; };
 		09000261243AA6B2003C7248 /* Propagate.h in Headers */ = {isa = PBXBuildFile; fileRef = 09000253243AA6B2003C7248 /* Propagate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0900026C243AA8F9003C7248 /* StreamSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900026B243AA8F9003C7248 /* StreamSubscriber.swift */; };
+		0900026E243AAC8B003C7248 /* SinglyLinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900026D243AAC8B003C7248 /* SinglyLinkedList.swift */; };
+		09000270243AACF2003C7248 /* StreamPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900026F243AACF2003C7248 /* StreamPublisher.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +32,9 @@
 		09000259243AA6B2003C7248 /* PropagateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PropagateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0900025E243AA6B2003C7248 /* PropagateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropagateTests.swift; sourceTree = "<group>"; };
 		09000260243AA6B2003C7248 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0900026B243AA8F9003C7248 /* StreamSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamSubscriber.swift; sourceTree = "<group>"; };
+		0900026D243AAC8B003C7248 /* SinglyLinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglyLinkedList.swift; sourceTree = "<group>"; };
+		0900026F243AACF2003C7248 /* StreamPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamPublisher.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +79,9 @@
 			children = (
 				09000253243AA6B2003C7248 /* Propagate.h */,
 				09000254243AA6B2003C7248 /* Info.plist */,
+				0900026B243AA8F9003C7248 /* StreamSubscriber.swift */,
+				0900026F243AACF2003C7248 /* StreamPublisher.swift */,
+				0900026D243AAC8B003C7248 /* SinglyLinkedList.swift */,
 			);
 			path = Propagate;
 			sourceTree = "<group>";
@@ -148,6 +157,7 @@
 				TargetAttributes = {
 					0900024F243AA6B2003C7248 = {
 						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
 					};
 					09000258243AA6B2003C7248 = {
 						CreatedOnToolsVersion = 11.3.1;
@@ -195,6 +205,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09000270243AACF2003C7248 /* StreamPublisher.swift in Sources */,
+				0900026E243AAC8B003C7248 /* SinglyLinkedList.swift in Sources */,
+				0900026C243AA8F9003C7248 /* StreamSubscriber.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +353,7 @@
 		09000265243AA6B2003C7248 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 622WMK9UYQ;
@@ -356,6 +370,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jakehawken.Propagate;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -364,6 +379,7 @@
 		09000266243AA6B2003C7248 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 622WMK9UYQ;
@@ -388,6 +404,7 @@
 		09000268243AA6B2003C7248 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 622WMK9UYQ;
 				INFOPLIST_FILE = PropagateTests/Info.plist;
@@ -406,6 +423,7 @@
 		09000269243AA6B2003C7248 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 622WMK9UYQ;
 				INFOPLIST_FILE = PropagateTests/Info.plist;
