@@ -10,3 +10,7 @@ public enum StreamState<T, E: Error> {
     case error(E)
     case cancelled
 }
+
+extension StreamState: Equatable where T: Equatable, E: Equatable {
+    
+}

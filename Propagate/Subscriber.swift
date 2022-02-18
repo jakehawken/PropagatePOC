@@ -21,12 +21,6 @@ public class Subscriber<T, E: Error> {
         self.callbackQueue = callbackQueue
     }
     
-    internal func receive(_ state: StreamState<T,E>) {
-        lockQueue.async { [weak self] in
-            self?.executeCallbacks(forState: state)
-        }
-    }
-    
     deinit {
         cancel()
     }
@@ -36,6 +30,12 @@ public class Subscriber<T, E: Error> {
 // MARK: - Convenience
 
 internal extension Subscriber {
+    
+    func receive(_ state: StreamState<T,E>) {
+        lockQueue.async { [weak self] in
+            self?.executeCallbacks(forState: state)
+        }
+    }
     
     func receive(_ data: T) {
         receive(.data(data))
@@ -63,7 +63,7 @@ private extension Subscriber {
     
 }
 
-// MARK: - subscription
+// MARK: - Subscription
 
 public extension Subscriber {
     

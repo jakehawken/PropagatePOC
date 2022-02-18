@@ -15,7 +15,26 @@ public class Publisher<T, E: Error> {
     
     public init() {}
     
-    public func subscriber() -> Subscriber<T, E> {
+    internal func publishNewState(_ state: State) {
+        lockQueue.async { [weak self] in
+            guard let self = self, !self.isCancelled else {
+                return
+            }
+            self.subscribers.forEach { $0.receive(state) }
+        }
+    }
+    
+    deinit {
+        cancelAll()
+    }
+    
+}
+
+// MARK: - Main interface
+
+public extension Publisher {
+    
+    func subscriber() -> Subscriber<T, E> {
         let canceller = Canceller<T,E> { [weak self] subscriber in
             self?.subscribers.pruneIf { $0 === subscriber }
         }
@@ -26,21 +45,6 @@ public class Publisher<T, E: Error> {
         return newSub
     }
     
-    public func publishNewState(_ state: State) {
-        lockQueue.async { [weak self] in
-            guard let self = self, !self.isCancelled else {
-                return
-            }
-            self.subscribers.forEach { $0.receive(state) }
-        }
-    }
-    
-}
-
-// MARK: - Convenience methods
-
-public extension Publisher {
-    
     func publish(_ model: T) {
         publishNewState(.data(model))
     }
@@ -50,9 +54,12 @@ public extension Publisher {
     }
     
     func cancelAll() {
-        lockQueue.async { [weak self] in
-            self?.isCancelled = true
-            self?.subscribers.removeAll().forEach { $0.receive(.cancelled) }
+        isCancelled = true
+        let removedSubscribers = subscribers.removeAll()
+        lockQueue.async {
+            removedSubscribers.forEach {
+                $0.receive(.cancelled)
+            }
         }
     }
     

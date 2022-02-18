@@ -78,6 +78,66 @@ class PropagateTests: XCTestCase {
         XCTAssertEqual(subscriptionValues, valuesToEmit)
         XCTAssertEqual(errors, TestError.allCases)
     }
+    
+    func testMultipleSubscribersGetUpdates() {
+        let statesToSend: [StreamState<Int, TestError>] = [
+            .data(0), .error(.case1), .data(2), .error(.case2),
+            .data(4), .error(.case3), .cancelled, .data(1)
+        ]
+        let expectedStates: [StreamState<Int, TestError>] = [
+            .data(0), .error(.case1), .data(2), .error(.case2),
+            .data(4), .error(.case3), .cancelled
+        ]
+        
+        var subscriber1ReceivedStates = [StreamState<Int, TestError>]()
+        subscriber1 = subject.subscriber().subscribe {
+            subscriber1ReceivedStates.append($0)
+        }
+        
+        var subscriber2ReceivedStates = [StreamState<Int, TestError>]()
+        subscriber2 = subject.subscriber().subscribe {
+            subscriber2ReceivedStates.append($0)
+        }
+        
+        var subscriber3ReceivedStates = [StreamState<Int, TestError>]()
+        subscriber3 = subject.subscriber().subscribe {
+            subscriber3ReceivedStates.append($0)
+        }
+        
+        statesToSend.forEach { state in
+            switch state {
+            case let .data(data):
+                subject.publish(data)
+            case let .error(error):
+                subject.publish(error)
+            case .cancelled:
+                subject.cancelAll()
+            }
+        }
+        
+        sleep(1)
+        XCTAssertEqual(subscriber1ReceivedStates, expectedStates)
+        XCTAssertEqual(subscriber2ReceivedStates, expectedStates)
+        XCTAssertEqual(subscriber3ReceivedStates, expectedStates)
+    }
+    
+    func testPublishserBeingReleasedFromMemoryTriggersCancellation() {
+        var publisher: Publisher<Int, TestError>? = .init()
+    
+        let expectations = (1...3).map { expectation(description: "Should cancel for subscriber\($0).") }
+        subscriber1 = publisher?.subscriber().onCancelled {
+            expectations[0].fulfill()
+        }
+        subscriber2 = publisher?.subscriber().onCancelled {
+            expectations[1].fulfill()
+        }
+        subscriber3 = publisher?.subscriber().onCancelled {
+            expectations[2].fulfill()
+        }
+        
+        publisher = nil
+        wait(for: expectations, timeout: 1)
+    }
 
 }
 
