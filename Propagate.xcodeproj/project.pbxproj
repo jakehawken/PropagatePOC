@@ -10,9 +10,11 @@
 		0900025A243AA6B2003C7248 /* Propagate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09000250243AA6B2003C7248 /* Propagate.framework */; };
 		0900025F243AA6B2003C7248 /* PropagateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900025E243AA6B2003C7248 /* PropagateTests.swift */; };
 		09000261243AA6B2003C7248 /* Propagate.h in Headers */ = {isa = PBXBuildFile; fileRef = 09000253243AA6B2003C7248 /* Propagate.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0900026C243AA8F9003C7248 /* StreamSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900026B243AA8F9003C7248 /* StreamSubscriber.swift */; };
+		0900026C243AA8F9003C7248 /* Subscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900026B243AA8F9003C7248 /* Subscriber.swift */; };
 		0900026E243AAC8B003C7248 /* SinglyLinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900026D243AAC8B003C7248 /* SinglyLinkedList.swift */; };
-		09000270243AACF2003C7248 /* StreamPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900026F243AACF2003C7248 /* StreamPublisher.swift */; };
+		09000270243AACF2003C7248 /* Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900026F243AACF2003C7248 /* Publisher.swift */; };
+		16278C0627BE2C1900961943 /* StreamState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16278C0527BE2C1900961943 /* StreamState.swift */; };
+		16E3F61E27BCCBB2005E5839 /* WeakBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E3F61D27BCCBB2005E5839 /* WeakBox.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,9 +34,11 @@
 		09000259243AA6B2003C7248 /* PropagateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PropagateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0900025E243AA6B2003C7248 /* PropagateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropagateTests.swift; sourceTree = "<group>"; };
 		09000260243AA6B2003C7248 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0900026B243AA8F9003C7248 /* StreamSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamSubscriber.swift; sourceTree = "<group>"; };
+		0900026B243AA8F9003C7248 /* Subscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscriber.swift; sourceTree = "<group>"; };
 		0900026D243AAC8B003C7248 /* SinglyLinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglyLinkedList.swift; sourceTree = "<group>"; };
-		0900026F243AACF2003C7248 /* StreamPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamPublisher.swift; sourceTree = "<group>"; };
+		0900026F243AACF2003C7248 /* Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Publisher.swift; sourceTree = "<group>"; };
+		16278C0527BE2C1900961943 /* StreamState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamState.swift; sourceTree = "<group>"; };
+		16E3F61D27BCCBB2005E5839 /* WeakBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakBox.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,9 +83,10 @@
 			children = (
 				09000253243AA6B2003C7248 /* Propagate.h */,
 				09000254243AA6B2003C7248 /* Info.plist */,
-				0900026B243AA8F9003C7248 /* StreamSubscriber.swift */,
-				0900026F243AACF2003C7248 /* StreamPublisher.swift */,
-				0900026D243AAC8B003C7248 /* SinglyLinkedList.swift */,
+				0900026F243AACF2003C7248 /* Publisher.swift */,
+				0900026B243AA8F9003C7248 /* Subscriber.swift */,
+				16278C0527BE2C1900961943 /* StreamState.swift */,
+				16278C0827BE30BE00961943 /* Internal Helper Types */,
 			);
 			path = Propagate;
 			sourceTree = "<group>";
@@ -93,6 +98,15 @@
 				09000260243AA6B2003C7248 /* Info.plist */,
 			);
 			path = PropagateTests;
+			sourceTree = "<group>";
+		};
+		16278C0827BE30BE00961943 /* Internal Helper Types */ = {
+			isa = PBXGroup;
+			children = (
+				0900026D243AAC8B003C7248 /* SinglyLinkedList.swift */,
+				16E3F61D27BCCBB2005E5839 /* WeakBox.swift */,
+			);
+			path = "Internal Helper Types";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -152,7 +166,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1320;
 				ORGANIZATIONNAME = "Jake Hawken";
 				TargetAttributes = {
 					0900024F243AA6B2003C7248 = {
@@ -205,9 +219,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09000270243AACF2003C7248 /* StreamPublisher.swift in Sources */,
+				16278C0627BE2C1900961943 /* StreamState.swift in Sources */,
+				09000270243AACF2003C7248 /* Publisher.swift in Sources */,
+				16E3F61E27BCCBB2005E5839 /* WeakBox.swift in Sources */,
 				0900026E243AAC8B003C7248 /* SinglyLinkedList.swift in Sources */,
-				0900026C243AA8F9003C7248 /* StreamSubscriber.swift in Sources */,
+				0900026C243AA8F9003C7248 /* Subscriber.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +272,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -319,6 +336,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;

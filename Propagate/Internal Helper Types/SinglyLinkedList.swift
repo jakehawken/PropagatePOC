@@ -44,13 +44,12 @@ internal class SinglyLinkedList<T> {
     */
     internal static func fromArray(_ array: [T]) -> SinglyLinkedList? {
         var list: SinglyLinkedList?
-        array.forEach { (item) in
-            if let list = list {
-                list.append(item)
-            }
-            else {
+        for item in array {
+            guard let list = list else {
                 list = SinglyLinkedList(firstValue: item)
+                continue
             }
+            list.append(item)
         }
         return list
     }
@@ -65,6 +64,19 @@ internal class SinglyLinkedList<T> {
         }
         return SinglyLinkedList(rootNode: next,
                                 tailNode: tailNode)
+    }
+    
+    internal func filter(where meetsCriteria: (T) -> Bool) -> SinglyLinkedList? {
+        var values = [T]()
+        forEach {
+            if meetsCriteria($0) {
+                values.append($0)
+            }
+        }
+        guard !values.isEmpty else {
+            return nil
+        }
+        return SinglyLinkedList.fromArray(values)
     }
     
     private init(rootNode: SinglyLinkedListNode<T>, tailNode: SinglyLinkedListNode<T>) {
@@ -181,9 +193,9 @@ extension SinglyLinkedList where T:Equatable {
 
 extension SinglyLinkedList where T:AnyObject {
     
-    func containsObject(_ value: T) -> Bool {
+    func containsObject(_ object: T) -> Bool {
         let firstVal = firstValue { (element) in
-            memoryAddressStringFor(element) == memoryAddressStringFor(value)
+            element === object
         }
         return firstVal != nil
     }
@@ -231,9 +243,11 @@ extension SinglyLinkedListNode {
     }
     
     func removeAllChildren() {
-        let next = self.next
+        guard let next = next else {
+            return
+        }
         self.next = nil
-        next?.removeAllChildren()
+        next.removeAllChildren()
     }
     
     func listFromHere() -> SinglyLinkedList<T> {
