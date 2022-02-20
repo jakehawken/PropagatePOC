@@ -69,7 +69,7 @@ private extension Subscriber {
     
     func executeCallbacks(forState state: State) {
         callbacks.forEach { (queue, action) in
-            queue.sync { action(state) }
+            queue.async { action(state) }
         }
     }
     

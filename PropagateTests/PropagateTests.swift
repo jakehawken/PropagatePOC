@@ -11,20 +11,20 @@ import Propagate
 
 class PropagateTests: XCTestCase {
     
-    var subject: Publisher<Int, TestError>!
+    var publisher: Publisher<Int, TestError>!
     var subscriber1: Subscriber<Int, TestError>!
     var subscriber2: Subscriber<Int, TestError>!
     var subscriber3: Subscriber<Int, TestError>!
 
     override func setUp() {
-        subject = Publisher()
+        publisher = Publisher()
     }
 
     override func tearDown() {
         subscriber1 = nil
         subscriber2 = nil
         subscriber3 = nil
-        subject = nil
+        publisher = nil
     }
 
     func testPublisherGeneratesCorrectlyConnectedSubscriber() {
@@ -32,7 +32,7 @@ class PropagateTests: XCTestCase {
         var subscriptionValues = [Int]()
         let valuesToEmit = [4, 2, 7, 1, 8]
         
-        subscriber1 = subject.subscriber()
+        subscriber1 = publisher.subscriber()
             .onNewData(onQueue: .main) { value in
                 subscriptionValues.append(value)
                 if valuesToEmit.last == value {
@@ -42,7 +42,7 @@ class PropagateTests: XCTestCase {
         
         
         valuesToEmit.forEach {
-            subject.publish($0)
+            publisher.publish($0)
         }
         
         waitForExpectations(timeout: 0.01, handler: nil)
@@ -59,7 +59,7 @@ class PropagateTests: XCTestCase {
         }
         
         TestError.allCases.forEach {
-            subject.publish($0)
+            publisher.publish($0)
         }
         
         waitForExpectations(timeout: 0.01, handler: nil)
@@ -70,9 +70,9 @@ class PropagateTests: XCTestCase {
             cancelExpectation.fulfill()
         }
         
-        subject.cancelAll()
-        subject.publish(249)
-        subject.publish(.case1)
+        publisher.cancelAll()
+        publisher.publish(249)
+        publisher.publish(.case1)
         waitForExpectations(timeout: 0.01, handler: nil)
         // Verify that no attempted emissions succeed after cancellation
         XCTAssertEqual(subscriptionValues, valuesToEmit)
@@ -80,59 +80,68 @@ class PropagateTests: XCTestCase {
     }
     
     func testMultipleSubscribersGetUpdates() {
-        let statesToSend: [StreamState<Int, TestError>] = [
-            .data(0), .error(.case1), .data(2), .error(.case2),
-            .data(4), .error(.case3), .cancelled, .data(1)
-        ]
-        let expectedStates: [StreamState<Int, TestError>] = [
+        let emittedStates: [StreamState<Int, TestError>] = [
             .data(0), .error(.case1), .data(2), .error(.case2),
             .data(4), .error(.case3), .cancelled
         ]
         
+        let expectations = (1...3).map {
+            expectation(description: "Last state received on subscriber\($0).")
+        }
+        
         var subscriber1ReceivedStates = [StreamState<Int, TestError>]()
-        subscriber1 = subject.subscriber().subscribe {
+        subscriber1 = publisher.subscriber().subscribe {
             subscriber1ReceivedStates.append($0)
+        }
+        .onCancelled {
+            expectations[0].fulfill()
         }
         
         var subscriber2ReceivedStates = [StreamState<Int, TestError>]()
-        subscriber2 = subject.subscriber().subscribe {
+        subscriber2 = publisher.subscriber().subscribe {
             subscriber2ReceivedStates.append($0)
+        }
+        .onCancelled {
+            expectations[1].fulfill()
         }
         
         var subscriber3ReceivedStates = [StreamState<Int, TestError>]()
-        subscriber3 = subject.subscriber().subscribe {
+        subscriber3 = publisher.subscriber().subscribe {
             subscriber3ReceivedStates.append($0)
         }
+        .onCancelled {
+            expectations[2].fulfill()
+        }
         
-        statesToSend.forEach { state in
+        emittedStates.forEach { state in
             switch state {
             case let .data(data):
-                subject.publish(data)
+                publisher.publish(data)
             case let .error(error):
-                subject.publish(error)
+                publisher.publish(error)
             case .cancelled:
-                subject.cancelAll()
+                publisher.cancelAll()
             }
         }
         
-        sleep(1)
-        XCTAssertEqual(subscriber1ReceivedStates, expectedStates)
-        XCTAssertEqual(subscriber2ReceivedStates, expectedStates)
-        XCTAssertEqual(subscriber3ReceivedStates, expectedStates)
+        wait(for: expectations, timeout: 2)
+        XCTAssertEqual(subscriber1ReceivedStates, emittedStates)
+        XCTAssertEqual(subscriber2ReceivedStates, emittedStates)
+        XCTAssertEqual(subscriber3ReceivedStates, emittedStates)
     }
     
     func testPublishserBeingReleasedFromMemoryTriggersCancellation() {
         let expectations = (1...3).map { expectation(description: "Should cancel for subscriber\($0).") }
-        subscriber1 = subject.subscriber().onCancelled {
+        subscriber1 = publisher.subscriber().onCancelled {
             expectations[0].fulfill()
         }
-        subscriber2 = subject.subscriber().onCancelled {
+        subscriber2 = publisher.subscriber().onCancelled {
             expectations[1].fulfill()
         }
-        subscriber3 = subject.subscriber().onCancelled {
+        subscriber3 = publisher.subscriber().onCancelled {
             expectations[2].fulfill()
         }
-        subject = nil
+        publisher = nil
         wait(for: expectations, timeout: 1)
     }
 
