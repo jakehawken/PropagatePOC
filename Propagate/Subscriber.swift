@@ -22,7 +22,18 @@ public class Subscriber<T, E: Error> {
     }
     
     deinit {
+        safePrint("Releasing \(self) from memory.")
         cancel()
+    }
+    
+}
+
+// MARK: debugging
+
+extension Subscriber: CustomStringConvertible {
+    
+    public var description: String {
+        return "Subscriber(\(memoryAddressStringFor(self)))"
     }
     
 }
@@ -100,10 +111,6 @@ public extension Subscriber {
     @discardableResult func onNewData(perform dataAction: @escaping (T) -> Void) -> Self {
         onNewData(onQueue: callbackQueue, perform: dataAction)
     }
-
-//    @discardableResult func subscribeOnMain(performing dataAction: @escaping (T) -> Void) -> Self {
-//        onNewData(onQueue: .main, perform: dataAction)
-//    }
     
     // MARK: error only
     
@@ -121,10 +128,6 @@ public extension Subscriber {
     @discardableResult func onError(perform callback: @escaping (E) -> Void) -> Self {
         onError(onQueue: callbackQueue, perform: callback)
     }
-
-//    @discardableResult func subscribeOnMain(performing onError: @escaping (E) -> Void) -> Self {
-//        subscribeOnError(onQueue: .main, onError: onError)
-//    }
     
     // MARK: cancel only
     
@@ -142,9 +145,5 @@ public extension Subscriber {
     @discardableResult func onCancelled(perform callback: @escaping () -> Void) -> Self {
         onCancelled(onQueue: callbackQueue, perform: callback)
     }
-
-//    @discardableResult func subscribeOnMain(performing onCancelled: @escaping () -> Void) -> Self {
-//        subscribeOnCancelled(onQueue: .main, onCancelled: onCancelled)
-//    }
     
 }

@@ -122,20 +122,17 @@ class PropagateTests: XCTestCase {
     }
     
     func testPublishserBeingReleasedFromMemoryTriggersCancellation() {
-        var publisher: Publisher<Int, TestError>? = .init()
-    
         let expectations = (1...3).map { expectation(description: "Should cancel for subscriber\($0).") }
-        subscriber1 = publisher?.subscriber().onCancelled {
+        subscriber1 = subject.subscriber().onCancelled {
             expectations[0].fulfill()
         }
-        subscriber2 = publisher?.subscriber().onCancelled {
+        subscriber2 = subject.subscriber().onCancelled {
             expectations[1].fulfill()
         }
-        subscriber3 = publisher?.subscriber().onCancelled {
+        subscriber3 = subject.subscriber().onCancelled {
             expectations[2].fulfill()
         }
-        
-        publisher = nil
+        subject = nil
         wait(for: expectations, timeout: 1)
     }
 

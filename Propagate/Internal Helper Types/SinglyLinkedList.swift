@@ -5,10 +5,6 @@
 
 import Foundation
 
-internal func memoryAddressStringFor(_ obj: AnyObject) -> String {
-    return "\(Unmanaged.passUnretained(obj).toOpaque())"
-}
-
 // MARK: - SinglyLinkedList<T> -
 
 /**
@@ -213,9 +209,7 @@ internal class SinglyLinkedListNode<T>: Equatable {
     }
     
     internal static func == (lhs: SinglyLinkedListNode<T>, rhs: SinglyLinkedListNode<T>) -> Bool {
-        let addressL = memoryAddressStringFor(lhs)
-        let addressR = memoryAddressStringFor(rhs)
-        return addressL == addressR
+        return lhs === rhs
     }
 }
 

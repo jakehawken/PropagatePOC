@@ -25,7 +25,18 @@ public class Publisher<T, E: Error> {
     }
     
     deinit {
+        safePrint("Releasing \(self) from memory.")
         cancelAll()
+    }
+    
+}
+
+// MARK: debugging
+
+extension Publisher: CustomStringConvertible {
+    
+    public var description: String {
+        return "Publisher(\(memoryAddressStringFor(self)))"
     }
     
 }
@@ -42,6 +53,7 @@ public extension Publisher {
         lockQueue.async { [weak self] in
             self?.subscribers.insert(newSub)
         }
+        safePrint("Generating new subscriber: \(newSub) on publisher \(self)")
         return newSub
     }
     
@@ -56,6 +68,7 @@ public extension Publisher {
     func cancelAll() {
         isCancelled = true
         let removedSubscribers = subscribers.removeAll()
+        safePrint("Removing subscribers: \(removedSubscribers)")
         lockQueue.async {
             removedSubscribers.forEach {
                 $0.receive(.cancelled)
