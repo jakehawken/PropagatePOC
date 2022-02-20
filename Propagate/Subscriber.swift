@@ -43,6 +43,7 @@ extension Subscriber: CustomStringConvertible {
 internal extension Subscriber {
     
     func receive(_ state: StreamState<T,E>) {
+        safePrint("\(self) receiving \(state)")
         lockQueue.async { [weak self] in
             self?.executeCallbacks(forState: state)
         }

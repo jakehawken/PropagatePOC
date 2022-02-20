@@ -5,7 +5,7 @@
 
 import Foundation
 
-internal class WeakBox<T: AnyObject> {
+internal class WeakBox<T: AnyObject>: CustomStringConvertible {
     
     private(set) weak var value: T?
     
@@ -17,9 +17,17 @@ internal class WeakBox<T: AnyObject> {
         self.value = value
     }
     
+    public var description: String {
+        var valueString = "nil"
+        if let val = value {
+            valueString = "\(val)"
+        }
+        return "WeakBox<\(T.self)>(\(valueString))"
+    }
+    
 }
 
-internal class WeakBag <T: AnyObject> {
+internal class WeakBag <T: AnyObject>: CustomStringConvertible {
     
     private var rootNode = SinglyLinkedListNode<WeakBox<T>>(value: WeakBox(nil))
     
@@ -60,6 +68,19 @@ internal class WeakBag <T: AnyObject> {
         let removedValues = values()
         rootNode.removeAllChildren()
         return removedValues
+    }
+    
+    public var description: String {
+        var output = "WeakBag(\(memoryAddressStringFor(self))){ "
+        var count = 0
+        forEach {
+            output += "\($0) "
+            count += 1
+        }
+        if count == 0 {
+            output += "EMPTY "
+        }
+        return output + "}"
     }
     
 }
