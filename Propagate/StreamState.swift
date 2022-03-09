@@ -12,9 +12,9 @@ public enum StreamState<T, E: Error>: CustomStringConvertible {
     
     public var description: String {
         switch self {
-        case .data(let data): return "<.data(\(data))>"
-        case .error(let error): return "<.error(\(error))>"
-        case .cancelled: return "<.cancelled>"
+        case .data(let data): return "\(data)"
+        case .error(let error): return "\(error)"
+        case .cancelled: return "Cancelled."
         }
     }
 }

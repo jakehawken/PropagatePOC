@@ -5,10 +5,10 @@
 
 import Foundation
 
-internal var debugLoggingEnabled = false
+internal var debugLogLevel: DebugLogLevel = .none
 
-func safePrint(_ message: String) {
-    guard debugLoggingEnabled else {
+func safePrint(_ message: String, logType: LogType) {
+    guard logType.canBeShownAt(logLevel: debugLogLevel) else {
         return
     }
     print("<>DEBUG: " + message)
@@ -16,4 +16,39 @@ func safePrint(_ message: String) {
 
 internal func memoryAddressStringFor(_ obj: AnyObject) -> String {
     return "\(Unmanaged.passUnretained(obj).toOpaque())"
+}
+
+internal enum DebugLogLevel {
+    case all
+    case lifeCyclePlusPubSub
+    case lifeCyclePlusOperators
+    case operatorsOnly
+    case pubSubOnly
+    case lifeCycleOnly
+    case none
+}
+
+internal enum LogType: Equatable {
+    case lifeCycle
+    case pubSub
+    case operators
+    
+    func canBeShownAt(logLevel: DebugLogLevel) -> Bool {
+        switch logLevel {
+        case .none:
+            return false
+        case .all:
+            return true
+        case .lifeCycleOnly:
+            return self == .lifeCycle
+        case .pubSubOnly:
+            return self == .pubSub
+        case .lifeCyclePlusPubSub:
+            return self == .lifeCycle || self == .pubSub
+        case .operatorsOnly:
+            return self == .operators
+        case .lifeCyclePlusOperators:
+            return self == .lifeCycle || self == .operators
+        }
+    }
 }

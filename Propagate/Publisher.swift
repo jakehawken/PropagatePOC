@@ -14,11 +14,11 @@ public class Publisher<T, E: Error> {
     private(set) public var isCancelled = false
     
     public init() {
-        safePrint("Created new publisher: \(self)")
+        safePrint("Created new publisher: \(self)", logType: .lifeCycle)
     }
     
     internal func publishNewState(_ state: State) {
-        safePrint("Publishing state \(state)")
+        safePrint("Publishing state \(state) from \(self)", logType: .pubSub)
         lockQueue.async {
             guard !self.isCancelled else {
                 return
@@ -28,7 +28,7 @@ public class Publisher<T, E: Error> {
     }
     
     deinit {
-        safePrint("Releasing \(self) from memory.")
+        safePrint("Releasing \(self) from memory.", logType: .lifeCycle)
         // The asynchronous cancelAll() can't be called from deinit
         // because it results in a bad access crash.
         handleCancellation()
@@ -41,7 +41,7 @@ public class Publisher<T, E: Error> {
 extension Publisher: CustomStringConvertible {
     
     public var description: String {
-        return "Publisher(\(memoryAddressStringFor(self)))"
+        return "Publisher<\(T.self),\(E.self)>(\(memoryAddressStringFor(self)))"
     }
     
 }
@@ -58,7 +58,7 @@ public extension Publisher {
         lockQueue.async { [weak self] in
             self?.subscribers.insert(newSub)
         }
-        safePrint("Generating new subscriber: \(newSub) on publisher \(self)")
+        safePrint("Generating new subscriber: \(newSub) from \(self)", logType: .lifeCycle)
         return newSub
     }
     
@@ -83,7 +83,7 @@ public extension Publisher {
 private extension Publisher {
     
     func removeSubscriber(_ subscriber: Subscriber<T,E>) {
-        safePrint("Removing \(subscriber) from \(self)")
+        safePrint("Removing \(subscriber) from \(self)", logType: .pubSub)
         self.subscribers.pruneIf { $0 === subscriber }
     }
     
@@ -93,9 +93,9 @@ private extension Publisher {
         }
         isCancelled = true
         let removedSubscribers = subscribers.removeAll()
-        safePrint("Removing subscribers: \(removedSubscribers)")
+        safePrint("Removing subscribers: \(removedSubscribers)", logType: .pubSub)
         removedSubscribers.forEach {
-            safePrint("Sending cancellation signal to \($0)")
+            safePrint("Sending cancellation signal to \($0)", logType: .pubSub)
             $0.receive(.cancelled)
         }
     }
@@ -104,11 +104,11 @@ private extension Publisher {
 
 // MARK: - Supporting Types
 
-internal class Canceller<T, E: Error> {
+class Canceller<T, E: Error> {
     
     private var cancelAction: ((Subscriber<T,E>) -> Void)?
     
-    fileprivate init(cancelAction: @escaping (Subscriber<T,E>) -> Void) {
+    init(cancelAction: @escaping (Subscriber<T,E>) -> Void) {
         self.cancelAction = cancelAction
     }
     

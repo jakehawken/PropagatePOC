@@ -22,7 +22,7 @@ public class Subscriber<T, E: Error> {
     }
     
     deinit {
-        safePrint("Releasing \(self) from memory.")
+        safePrint("Releasing \(self) from memory.", logType: .lifeCycle)
         cancel()
     }
     
@@ -33,7 +33,7 @@ public class Subscriber<T, E: Error> {
 extension Subscriber: CustomStringConvertible {
     
     public var description: String {
-        return "Subscriber(\(memoryAddressStringFor(self)))"
+        return "Subscriber<\(T.self),\(E.self)>(\(memoryAddressStringFor(self)))"
     }
     
 }
@@ -43,7 +43,6 @@ extension Subscriber: CustomStringConvertible {
 internal extension Subscriber {
     
     func receive(_ state: StreamState<T,E>) {
-        safePrint("\(self) receiving \(state)")
         lockQueue.async { [weak self] in
             self?.executeCallbacks(forState: state)
         }
@@ -68,6 +67,7 @@ internal extension Subscriber {
 private extension Subscriber {
     
     func executeCallbacks(forState state: State) {
+        safePrint("\(self) received \(state)", logType: .pubSub)
         callbacks.forEach { (queue, action) in
             queue.async { action(state) }
         }

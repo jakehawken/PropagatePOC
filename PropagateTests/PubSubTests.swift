@@ -1,15 +1,12 @@
-//
-//  PropagateTests.swift
+//  PubSubTests.swift
 //  PropagateTests
-//
 //  Created by Jake Hawken on 4/5/20.
 //  Copyright © 2020 Jake Hawken. All rights reserved.
-//
 
 import XCTest
 import Propagate
 
-class PropagateTests: XCTestCase {
+class PubSubTests: XCTestCase {
     
     var publisher: Publisher<Int, TestError>!
     var subscriber1: Subscriber<Int, TestError>!
@@ -151,8 +148,12 @@ class PropagateTests: XCTestCase {
 
 }
 
-enum TestError: Error, Equatable, CaseIterable {
+enum TestError: String, Error, Equatable, CaseIterable, CustomStringConvertible {
     case case1
     case case2
     case case3
+    
+    var description: String {
+        return ".\(rawValue)"
+    }
 }

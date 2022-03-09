@@ -8,13 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		0900025A243AA6B2003C7248 /* Propagate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09000250243AA6B2003C7248 /* Propagate.framework */; };
-		0900025F243AA6B2003C7248 /* PropagateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900025E243AA6B2003C7248 /* PropagateTests.swift */; };
+		0900025F243AA6B2003C7248 /* PubSubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900025E243AA6B2003C7248 /* PubSubTests.swift */; };
 		09000261243AA6B2003C7248 /* Propagate.h in Headers */ = {isa = PBXBuildFile; fileRef = 09000253243AA6B2003C7248 /* Propagate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0900026C243AA8F9003C7248 /* Subscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900026B243AA8F9003C7248 /* Subscriber.swift */; };
 		0900026E243AAC8B003C7248 /* SinglyLinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900026D243AAC8B003C7248 /* SinglyLinkedList.swift */; };
 		09000270243AACF2003C7248 /* Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900026F243AACF2003C7248 /* Publisher.swift */; };
 		16278C0627BE2C1900961943 /* StreamState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16278C0527BE2C1900961943 /* StreamState.swift */; };
 		16C4AE3E27C1E15E0033970D /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C4AE3D27C1E15E0033970D /* Debug.swift */; };
+		16C4AE4027D844CA0033970D /* Subscriber+Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C4AE3F27D844CA0033970D /* Subscriber+Map.swift */; };
+		16C4AE4527D87F730033970D /* MapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C4AE4427D87F730033970D /* MapTests.swift */; };
 		16E3F61E27BCCBB2005E5839 /* WeakBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E3F61D27BCCBB2005E5839 /* WeakBox.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,13 +35,15 @@
 		09000253243AA6B2003C7248 /* Propagate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Propagate.h; sourceTree = "<group>"; };
 		09000254243AA6B2003C7248 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		09000259243AA6B2003C7248 /* PropagateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PropagateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0900025E243AA6B2003C7248 /* PropagateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropagateTests.swift; sourceTree = "<group>"; };
+		0900025E243AA6B2003C7248 /* PubSubTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PubSubTests.swift; sourceTree = "<group>"; };
 		09000260243AA6B2003C7248 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0900026B243AA8F9003C7248 /* Subscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscriber.swift; sourceTree = "<group>"; };
 		0900026D243AAC8B003C7248 /* SinglyLinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglyLinkedList.swift; sourceTree = "<group>"; };
 		0900026F243AACF2003C7248 /* Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Publisher.swift; sourceTree = "<group>"; };
 		16278C0527BE2C1900961943 /* StreamState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamState.swift; sourceTree = "<group>"; };
 		16C4AE3D27C1E15E0033970D /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
+		16C4AE3F27D844CA0033970D /* Subscriber+Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Subscriber+Map.swift"; sourceTree = "<group>"; };
+		16C4AE4427D87F730033970D /* MapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTests.swift; sourceTree = "<group>"; };
 		16E3F61D27BCCBB2005E5839 /* WeakBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakBox.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -87,6 +91,7 @@
 				09000254243AA6B2003C7248 /* Info.plist */,
 				0900026F243AACF2003C7248 /* Publisher.swift */,
 				0900026B243AA8F9003C7248 /* Subscriber.swift */,
+				16C4AE4127D844D00033970D /* Operators */,
 				16278C0527BE2C1900961943 /* StreamState.swift */,
 				16278C0827BE30BE00961943 /* Internal Helper Types */,
 			);
@@ -96,7 +101,8 @@
 		0900025D243AA6B2003C7248 /* PropagateTests */ = {
 			isa = PBXGroup;
 			children = (
-				0900025E243AA6B2003C7248 /* PropagateTests.swift */,
+				0900025E243AA6B2003C7248 /* PubSubTests.swift */,
+				16C4AE4427D87F730033970D /* MapTests.swift */,
 				09000260243AA6B2003C7248 /* Info.plist */,
 			);
 			path = PropagateTests;
@@ -110,6 +116,14 @@
 				16E3F61D27BCCBB2005E5839 /* WeakBox.swift */,
 			);
 			path = "Internal Helper Types";
+			sourceTree = "<group>";
+		};
+		16C4AE4127D844D00033970D /* Operators */ = {
+			isa = PBXGroup;
+			children = (
+				16C4AE3F27D844CA0033970D /* Subscriber+Map.swift */,
+			);
+			path = Operators;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -224,6 +238,7 @@
 			files = (
 				16278C0627BE2C1900961943 /* StreamState.swift in Sources */,
 				16C4AE3E27C1E15E0033970D /* Debug.swift in Sources */,
+				16C4AE4027D844CA0033970D /* Subscriber+Map.swift in Sources */,
 				09000270243AACF2003C7248 /* Publisher.swift in Sources */,
 				16E3F61E27BCCBB2005E5839 /* WeakBox.swift in Sources */,
 				0900026E243AAC8B003C7248 /* SinglyLinkedList.swift in Sources */,
@@ -235,7 +250,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0900025F243AA6B2003C7248 /* PropagateTests.swift in Sources */,
+				16C4AE4527D87F730033970D /* MapTests.swift in Sources */,
+				0900025F243AA6B2003C7248 /* PubSubTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
