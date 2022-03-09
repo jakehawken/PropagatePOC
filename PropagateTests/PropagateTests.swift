@@ -40,7 +40,6 @@ class PropagateTests: XCTestCase {
                 }
             }
         
-        
         valuesToEmit.forEach {
             publisher.publish($0)
         }
@@ -124,7 +123,7 @@ class PropagateTests: XCTestCase {
             }
         }
         
-        wait(for: expectations, timeout: 2)
+        wait(for: expectations, timeout: 0.1)
         XCTAssertEqual(subscriber1ReceivedStates, emittedStates)
         XCTAssertEqual(subscriber2ReceivedStates, emittedStates)
         XCTAssertEqual(subscriber3ReceivedStates, emittedStates)
@@ -141,8 +140,13 @@ class PropagateTests: XCTestCase {
         subscriber3 = publisher.subscriber().onCancelled {
             expectations[2].fulfill()
         }
-        publisher = nil
-        wait(for: expectations, timeout: 1)
+        DispatchQueue.global().async {
+            DispatchQueue.main.sync {
+                self.publisher = nil
+            }
+        }
+        
+        wait(for: expectations, timeout: 0.1)
     }
 
 }

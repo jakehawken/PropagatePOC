@@ -13,7 +13,9 @@ public class Publisher<T, E: Error> {
     private var subscribers = WeakBag<Subscriber<T, E>>()
     private(set) public var isCancelled = false
     
-    public init() {}
+    public init() {
+        safePrint("Created new publisher: \(self)")
+    }
     
     internal func publishNewState(_ state: State) {
         safePrint("Publishing state \(state)")
